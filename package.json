@@ -1,0 +1,33 @@
+{
+  "name": "comic-reader",
+  "version": "0.0.1",
+  "description": "Comic Reader",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "clean": "rm dist/bundle.js",
+    "start": "parcel src/index.html",
+    "build-prod": "parcel build src/index.html"
+  },
+  "dependencies": {
+    "emotion": "^10.0.9",
+    "libarchive.js": "^1.1.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-react": "^7.0.0",
+    "parcel-bundler": "^1.12.3",
+    "parcel-plugin-asset-copier": "^1.0.0"
+  },
+  "assetsPath": "public/",
+  "browserslist": [
+    "> 1%",
+    "not ie 11",
+    "not op_mini all"
+  ]
+}
