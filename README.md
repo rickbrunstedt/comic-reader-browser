@@ -1,32 +1,20 @@
-# empty-project-babel-css-react
+# Comic reader for the browser.
 
-Empty project.
+It can unzip comic files like .cbr and .cbz
 
-## Building and running on localhost
+## Development
 
-First install dependencies:
-
-```sh
+```bash
 npm install
+npm run start
 ```
 
-To run in hot module reloading mode:
+## Deployment
 
-```sh
-npm start
+From local machine just run
+
+```bash
+npm run deploy
 ```
 
-To create a production build:
-
-```sh
-npm run build-prod
-```
-
-## Running
-
-Open the file `dist/index.html` in your browser
-
-## Credits
-
-Created with [createapp.dev - an online tool for creating webpack and parcel projects](https://createapp.dev/)
-
+When push to github/master now will auto-deploy it. (By using the package script: `now-deploy`.)
