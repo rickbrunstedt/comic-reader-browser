@@ -7,10 +7,10 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "clean": "rm dist/bundle.js",
-    "start": "parcel src/index.html",
-    "build-prod": "parcel build src/index.html",
-    "now-build": "npm run build-prod",
+    "clean": "rm dist",
+    "build": "export NODE_ENV=production && webpack",
+    "dev": "webpack-dev-server --open",
+    "now-build": "npm run build",
     "deploy": "npx now"
   },
   "dependencies": {
@@ -20,13 +20,18 @@
     "react-dom": "^16.8.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.0",
+    "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.4.2",
     "@babel/preset-react": "^7.0.0",
-    "parcel-bundler": "^1.12.3",
-    "parcel-plugin-asset-copier": "^1.0.0"
+    "babel-loader": "^8.0.6",
+    "copy-webpack-plugin": "^5.0.4",
+    "css-loader": "^3.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.1",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.2"
   },
-  "assetsPath": "public/",
   "browserslist": [
     "> 1%",
     "not ie 11",
