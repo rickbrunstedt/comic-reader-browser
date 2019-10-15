@@ -1,4 +1,4 @@
-import React from 'react';
+import { h } from 'preact';
 import { css } from 'emotion';
 import { FileDrop } from './FileDrop';
 import { ProgressBar } from './ProgressBar';

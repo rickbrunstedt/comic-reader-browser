@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from 'preact/hooks';
 
 const keyType = {
   LEFT: 37,

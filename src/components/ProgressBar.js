@@ -1,4 +1,4 @@
-import React from 'react';
+import { h } from 'preact';
 import { css } from 'emotion';
 import { colors } from '../style/defaultStyles';
 

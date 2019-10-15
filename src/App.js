@@ -1,5 +1,5 @@
-import ReactDOM from 'react-dom';
-import React, { useEffect } from 'react';
+import { h } from 'preact';
+import { useEffect } from 'preact/hooks';
 import { useUnpackFile, usePageCount } from './hooks';
 import { FileDropView } from './components/FileDropView';
 import { ComicView } from './components/ComicView';
@@ -7,7 +7,7 @@ import { Navigation } from './components/Navigation';
 import { css } from 'emotion';
 import './style/index.css';
 
-function App() {
+export default function App() {
   const [{ files, progress }, fileActions] = useUnpackFile();
   const [pageState, pageActions] = usePageCount();
 
@@ -55,5 +55,3 @@ function App() {
     </div>
   );
 }
-
-ReactDOM.render(<App />, document.getElementById('app'));
