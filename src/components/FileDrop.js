@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+import { h } from 'preact';
+import { useRef } from 'preact/hooks';
 import { css } from 'emotion';
 import { colors } from '../style/defaultStyles';
 

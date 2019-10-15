@@ -1,5 +1,5 @@
 import { Archive } from 'libarchive.js/main.js';
-import { useReducer } from 'react';
+import { useReducer } from 'preact/hooks';
 import { readFileAsImage } from '../utils';
 
 Archive.init({
