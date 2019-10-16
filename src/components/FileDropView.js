@@ -3,20 +3,25 @@ import { css } from 'emotion';
 import { FileDrop } from './FileDrop';
 import { ProgressBar } from './ProgressBar';
 
+const container = css`
+  display: flex;
+  flex-direction: column;
+`;
+
 export function FileDropView({ unpackFile, progress }) {
+  function renderView() {
+    if (progress > 0) {
+      return <ProgressBar progress={progress} />;
+    }
+
+    return <FileDrop unpackFile={unpackFile} />;
+  }
+
   return (
-    <div
-      className={css`
-        display: flex;
-        flex-direction: column;
-      `}
-    >
+    <div className={container}>
       <h1 className="title">Comic Reader</h1>
-      {progress > 0 ? (
-        <ProgressBar progress={progress} />
-      ) : (
-        <FileDrop unpackFile={unpackFile} progress={progress} />
-      )}
+
+      {renderView()}
     </div>
   );
 }

@@ -41,8 +41,9 @@ export default function App() {
     <div
       className={css`
         display: grid;
-        grid-template-rows: 95vh 5vh;
-        height: 100vh;
+        grid-template-rows: 1fr 4rem;
+        height: 100%;
+        background-color: #000;
       `}
     >
       {renderView()}

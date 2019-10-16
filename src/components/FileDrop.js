@@ -3,6 +3,33 @@ import { useRef } from 'preact/hooks';
 import { css } from 'emotion';
 import { colors } from '../style/defaultStyles';
 
+const container = css`
+  flex: 1 1;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  background: ${colors.grayLight};
+  border-radius: 0.3rem;
+  margin: 0.7rem;
+
+  .info-text {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .file-button {
+    background: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+`;
+
 export function FileDrop({ unpackFile, progress }) {
   const fileInputRef = useRef(null);
 
@@ -36,35 +63,7 @@ export function FileDrop({ unpackFile, progress }) {
   }
 
   return (
-    <div
-      className={css`
-        flex: 1 1;
-        display: flex;
-        position: relative;
-        justify-content: center;
-        align-items: center;
-        max-width: 100%;
-        background: ${colors.grayLight};
-        border-radius: 1rem;
-        margin: 0.7rem;
-
-        .info-text {
-          font-size: 2rem;
-        }
-
-        .file-button {
-          background: none;
-          border: none;
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          left: 0;
-          top: 0;
-        }
-      `}
-      onDrop={onDrop}
-      onDragOver={onDragOver}
-    >
+    <div className={container} onDrop={onDrop} onDragOver={onDragOver}>
       <button onClick={handleClick} className="file-button" />
       <span className="info-text">Click or drag a file to this area</span>
       <input type="file" hidden ref={fileInputRef} onChange={onFileChange} />

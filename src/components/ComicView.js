@@ -5,20 +5,18 @@ const styles = css`
   display: grid;
   grid-template-columns: 1fr 1fr;
 
-  .single-image-container {
-    display: flex;
-    justify-content: center;
-    grid-column: 1/3;
-    height: 95vh;
-  }
-
   .image-container {
     display: flex;
-    height: 95vh;
+    justify-content: flex-end;
   }
 
-  .image-container:first-of-type {
-    justify-content: flex-end;
+  .image-container:only-child {
+    grid-column: 1/3;
+    justify-content: center;
+  }
+
+  .image-container + .image-container {
+    justify-content: flex-start;
   }
 
   img {
@@ -33,7 +31,7 @@ export function ComicView({ images }) {
     if (images.length === 1) {
       let firstImage = images[0];
       return (
-        <div className="single-image-container">
+        <div className="image-container">
           <img
             key={firstImage.name}
             alt={firstImage.name}
