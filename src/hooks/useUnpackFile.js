@@ -3,7 +3,7 @@ import { useReducer } from 'preact/hooks';
 import { readFileAsImage } from '../utils';
 
 Archive.init({
-  workerUrl: '/libarchive.js/worker-bundle.js',
+  workerUrl: '/libarchivejs/worker-bundle.js',
 });
 
 async function openArchive(zipFile) {

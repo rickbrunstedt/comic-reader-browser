@@ -45,7 +45,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'src/index.html',
     }),
-    new CopyPlugin([{ from: 'public', to: '' }]),
+    new CopyPlugin([
+      { from: 'node_modules/libarchive.js/dist', to: 'libarchivejs' },
+    ]),
   ],
 
   devServer: {
