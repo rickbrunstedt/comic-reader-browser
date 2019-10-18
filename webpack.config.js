@@ -1,6 +1,9 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { GenerateSW, InjectManifest } = require('workbox-webpack-plugin');
 
 const production = process.env.NODE_ENV;
 const mode = production === 'production' ? 'production' : 'development';
@@ -42,12 +45,19 @@ module.exports = {
   },
 
   plugins: [
+    new webpack.ProgressPlugin(),
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
     }),
     new CopyPlugin([
       { from: 'node_modules/libarchive.js/dist', to: 'libarchivejs' },
     ]),
+    new GenerateSW({
+      swDest: 'sw.js',
+      clientsClaim: true,
+      skipWaiting: true,
+    }),
   ],
 
   devServer: {
