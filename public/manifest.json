@@ -1,0 +1,113 @@
+{
+    "dir": "ltr",
+    "lang": "English",
+    "name": "Comic Book Reader",
+    "scope": "/",
+    "display": "fullscreen",
+    "start_url": "https://comic-reader-browser.rbrunstedt.now.sh/",
+    "short_name": "Comic Book Read",
+    "theme_color": "transparent",
+    "description": "",
+    "orientation": "any",
+    "background_color": "transparent",
+    "related_applications": [],
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "/images/a18229ce-6bb5-e807-256c-a59a8c20554b.webPlatform.png",
+            "sizes": "44x44",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/878c13ce-012a-c1ff-0985-6a04b0d2118d.webPlatform.png",
+            "sizes": "48x48",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/1a795b50-36d6-4537-ddbe-16b4c72f6dba.webPlatform.png",
+            "sizes": "1240x600",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/c5fcb849-352b-1adc-cda5-02a16254c2cf.webPlatform.png",
+            "sizes": "300x300",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/c762b7bd-41d7-7ead-2f73-b47203a38217.webPlatform.png",
+            "sizes": "150x150",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/cde8d3fd-c3d1-e85d-dfa5-7d987447adf2.webPlatform.png",
+            "sizes": "88x88",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/41cd7020-2abb-ed2b-cea3-10d6e7e9b357.webPlatform.png",
+            "sizes": "24x24",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/fa6db6ae-50ea-ca55-de2a-9ed46d5a58fb.webPlatform.png",
+            "sizes": "50x50",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/95d096e3-f2cb-4166-66f2-cbab8de5da93.webPlatform.png",
+            "sizes": "620x300",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/bd4bc464-2906-e557-cd7c-280e3102ab8c.webPlatform.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/1b1ee69e-b237-07ad-f629-9898332f4dd0.webPlatform.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/7603ba06-8942-2003-6d19-e3c3a1d8040a.webPlatform.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/ad079792-7d6b-e3c9-20d3-c421e32a558e.webPlatform.png",
+            "sizes": "72x72",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/9ebf91a0-1803-744f-2dab-ca7bb9262361.webPlatform.png",
+            "sizes": "36x36",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/48015bd6-5b37-33a1-6e2a-38b6a7a2f2a4.webPlatform.png",
+            "sizes": "1024x1024",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/d94c29c3-97f9-93bc-9e4d-a4a77313abb6.webPlatform.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/f8ff7ad1-b7c7-f621-3f76-65627ba61a25.webPlatform.png",
+            "sizes": "152x152",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/1c15e46b-7245-9f72-5986-25bcd14e5d1a.webPlatform.png",
+            "sizes": "120x120",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/2cfdcb2a-dd10-766b-c778-9a9cbd88c2c7.webPlatform.png",
+            "sizes": "76x76",
+            "type": "image/png"
+        }
+    ],
+    "screenshots": []
+}

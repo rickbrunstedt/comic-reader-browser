@@ -51,6 +51,7 @@ module.exports = {
       template: 'src/index.html',
     }),
     new CopyPlugin([
+      { from: 'public', to: '' },
       { from: 'node_modules/libarchive.js/dist', to: 'libarchivejs' },
     ]),
     new GenerateSW({
