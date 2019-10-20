@@ -19,14 +19,18 @@ export default function App() {
 
   function handleReset() {
     fileActions.reset();
-    pageActions.setNumberOfPages(1);
-    pageActions.setCurrentPage(1);
+    pageActions.reset();
   }
 
   function renderView() {
     if (progress === 100 && files[0].imageData) {
-      const file = files[pageState.current - 1];
-      return <ComicView images={[file]} />;
+      let images = [files[pageState.current - 1]];
+
+      if (pageState.amountToView === 2) {
+        images.push(files[pageState.current]);
+      }
+
+      return <ComicView images={images} />;
     }
 
     return <FileDropView unpackFile={fileActions.unpack} progress={progress} />;
@@ -34,7 +38,9 @@ export default function App() {
 
   const navigationActions = {
     handleReset: handleReset,
-    setCurrentPage: pageActions.setCurrentPage,
+    nextPage: pageActions.nextPage,
+    prevPage: pageActions.prevPage,
+    setAmountOfPagesToView: pageActions.setAmountToView,
   };
 
   return (

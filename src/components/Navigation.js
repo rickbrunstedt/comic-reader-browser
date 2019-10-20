@@ -4,7 +4,7 @@ import { colors } from '../style/defaultStyles';
 
 const container = css`
   display: grid;
-  grid-template-columns: minmax(1rem, 10rem) 1fr minmax(1rem, 10rem);
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
 
   color: ${colors.primary};
@@ -34,8 +34,16 @@ const container = css`
 `;
 
 export function Navigation({ progress, pageState, actions }) {
-  if (progress < 100) {
-    return null;
+  // if (progress < 100) {
+  //   return null;
+  // }
+
+  function handleAmountToView() {
+    if (pageState.amountToView === 1) {
+      actions.setAmountOfPagesToView(2);
+    } else {
+      actions.setAmountOfPagesToView(1);
+    }
   }
 
   return (
@@ -45,20 +53,15 @@ export function Navigation({ progress, pageState, actions }) {
       </button>
 
       <div className="page-controllers">
-        <button
-          className="page-button"
-          onClick={() => actions.setCurrentPage(pageState.current - 1)}
-        >
+        <button className="page-button" onClick={actions.prevPage}>
           Prev Page
         </button>
-        <button
-          className="page-button"
-          onClick={() => actions.setCurrentPage(pageState.current + 1)}
-        >
+        <button className="page-button" onClick={actions.nextPage}>
           Next Page
         </button>
       </div>
 
+      <button onClick={handleAmountToView}>Set View</button>
       <div className="page-number">
         {pageState.current}/{pageState.total}
       </div>

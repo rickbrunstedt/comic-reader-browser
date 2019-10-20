@@ -8,19 +8,27 @@ const keyType = {
 const types = {
   SET_PAGE: 'SET_PAGE',
   SET_TOTAL_PAGES: 'SET_TOTAL_PAGES',
+  SET_AMOUNT_TO_VIEW: 'SET_AMOUNT_TO_VIEW',
 };
 
 const initialState = {
-  currentPage: 1,
-  totalPages: 1,
+  current: 1,
+  total: 1,
+  amountToView: 1,
 };
 
 function pageCountReducer(state, action) {
   switch (action.type) {
     case types.SET_PAGE:
-      return { ...state, currentPage: action.page };
+      return { ...state, current: action.page };
     case types.SET_TOTAL_PAGES:
-      return { ...state, totalPages: action.totalPages };
+      return { ...state, total: action.total };
+    case types.SET_AMOUNT_TO_VIEW:
+      return {
+        ...state,
+        amountToView: action.amount,
+        current: action.current,
+      };
     default:
       return state;
   }
@@ -29,14 +37,33 @@ function pageCountReducer(state, action) {
 export function usePageCount() {
   const [state, dispatch] = useReducer(pageCountReducer, initialState);
 
-  function handleSetPage(page) {
-    if (page > 0 && page < state.totalPages + 1) {
+  function setCurrentPage(page) {
+    if (page > 0 && page < state.total + 1) {
       dispatch({ type: types.SET_PAGE, page });
     }
   }
 
-  function handleSetNumberOfPages(totalPages) {
-    dispatch({ type: types.SET_TOTAL_PAGES, totalPages });
+  function setNumberOfPages(total) {
+    dispatch({ type: types.SET_TOTAL_PAGES, total });
+  }
+
+  function setAmountToView(amount) {
+    let newCurrent;
+    for (let i = 1; i <= state.total; i += 2) {
+      if (i > state.current) {
+        newCurrent = i - 2;
+        break;
+      }
+    }
+    dispatch({ type: types.SET_AMOUNT_TO_VIEW, amount, current: newCurrent });
+  }
+
+  function nextPage() {
+    setCurrentPage(state.current + state.amountToView);
+  }
+
+  function prevPage() {
+    setCurrentPage(state.current - state.amountToView);
   }
 
   function changePageEvent(event) {
@@ -44,14 +71,19 @@ export function usePageCount() {
 
     switch (key) {
       case keyType.LEFT:
-        handleSetPage(state.currentPage - 1);
+        prevPage();
         return;
       case keyType.RIGHT:
-        handleSetPage(state.currentPage + 1);
+        nextPage();
         return;
       default:
         return;
     }
+  }
+
+  function reset() {
+    setNumberOfPages(1);
+    setCurrentPage(1);
   }
 
   useEffect(() => {
@@ -63,7 +95,7 @@ export function usePageCount() {
   });
 
   return [
-    { current: state.currentPage, total: state.totalPages },
-    { setCurrentPage: handleSetPage, setNumberOfPages: handleSetNumberOfPages },
+    state,
+    { nextPage, prevPage, setNumberOfPages, reset, setAmountToView },
   ];
 }
