@@ -34,9 +34,9 @@ const container = css`
 `;
 
 export function Navigation({ progress, pageState, actions }) {
-  // if (progress < 100) {
-  //   return null;
-  // }
+  if (progress < 100) {
+    return null;
+  }
 
   function handleAmountToView() {
     if (pageState.amountToView === 1) {

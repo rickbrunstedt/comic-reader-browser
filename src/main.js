@@ -1,7 +1,7 @@
 import { h, render } from 'preact';
 import App from './App.js';
 
-function initSericeWorker() {
+function initServiceWorker() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
@@ -15,7 +15,7 @@ function initSericeWorker() {
     });
   }
 }
-initSericeWorker();
+initServiceWorker();
 
 const rootNode = document.getElementById('app');
 render(<App />, rootNode);
