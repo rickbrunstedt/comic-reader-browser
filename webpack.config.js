@@ -18,7 +18,7 @@ if (!production) {
   };
 }
 
-module.exports = {
+const config = {
   entry: './src/main.js',
   mode,
   ...modeSettings,
@@ -54,14 +54,21 @@ module.exports = {
       { from: 'public', to: '' },
       { from: 'node_modules/libarchive.js/dist', to: 'libarchivejs' },
     ]),
-    new GenerateSW({
-      swDest: 'sw.js',
-      clientsClaim: true,
-      skipWaiting: true,
-    }),
   ],
 
   devServer: {
     contentBase: [path.join(__dirname, 'dist')],
   },
 };
+
+if (production) {
+  config.plugins.push(
+    new GenerateSW({
+      swDest: 'sw.js',
+      clientsClaim: true,
+      skipWaiting: true,
+    })
+  )
+}
+
+module.exports = config;

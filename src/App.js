@@ -26,7 +26,7 @@ export default function App() {
     if (progress === 100 && files[0].imageData) {
       let images = [files[pageState.current - 1]];
 
-      if (pageState.amountToView === 2) {
+      if (pageState.amountToView === 2 && files[pageState.current]) {
         images.push(files[pageState.current]);
       }
 

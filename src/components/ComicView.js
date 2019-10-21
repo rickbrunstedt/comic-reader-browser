@@ -28,19 +28,6 @@ const styles = css`
 
 export function ComicView({ images }) {
   function renderImages() {
-    if (images.length === 1) {
-      let firstImage = images[0];
-      return (
-        <div className="image-container">
-          <img
-            key={firstImage.name}
-            alt={firstImage.name}
-            src={firstImage.imageData}
-          />
-        </div>
-      );
-    }
-
     return images.map(image => (
       <div className="image-container">
         <img key={image.name} alt={image.name} src={image.imageData} />
