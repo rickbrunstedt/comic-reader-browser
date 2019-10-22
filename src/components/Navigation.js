@@ -4,7 +4,7 @@ import { colors } from '../style/defaultStyles';
 
 const container = css`
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
 
   color: ${colors.primary};
@@ -48,8 +48,8 @@ export function Navigation({ progress, pageState, actions }) {
 
   return (
     <div className={container}>
-      <button className="reset-button" onClick={() => actions.handleReset()}>
-        {'< Go Back'}
+      <button className="reset-button" onClick={actions.toggleShowMenu}>
+        Menu
       </button>
 
       <div className="page-controllers">
@@ -61,7 +61,6 @@ export function Navigation({ progress, pageState, actions }) {
         </button>
       </div>
 
-      <button onClick={handleAmountToView}>Set View</button>
       <div className="page-number">
         {pageState.current}/{pageState.total}
       </div>
