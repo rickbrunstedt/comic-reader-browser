@@ -1,15 +1,18 @@
 import { h } from 'preact';
+import { useState } from 'preact/hooks';
 import { useEffect } from 'preact/hooks';
 import { useUnpackFile, usePageCount } from './hooks';
 import { FileDropView } from './components/FileDropView';
 import { ComicView } from './components/ComicView';
 import { Navigation } from './components/Navigation';
+import { ModalMenu } from './components/ModalMenu';
 import { css } from 'emotion';
 import './style/index.css';
 
 export default function App() {
   const [{ files, progress }, fileActions] = useUnpackFile();
   const [pageState, pageActions] = usePageCount();
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   useEffect(() => {
     if (progress === 100) {
@@ -17,9 +20,14 @@ export default function App() {
     }
   }, [progress, files.length, pageActions]);
 
+  function toggleShowMenu() {
+    setIsMenuVisible(!isMenuVisible);
+  }
+
   function handleReset() {
     fileActions.reset();
     pageActions.reset();
+    setIsMenuVisible(false);
   }
 
   function renderView() {
@@ -37,6 +45,7 @@ export default function App() {
   }
 
   const navigationActions = {
+    toggleShowMenu,
     handleReset: handleReset,
     nextPage: pageActions.nextPage,
     prevPage: pageActions.prevPage,
@@ -53,6 +62,10 @@ export default function App() {
       `}
     >
       {renderView()}
+
+      {isMenuVisible && (
+        <ModalMenu pageState={pageState} actions={navigationActions} />
+      )}
 
       <Navigation
         progress={progress}
