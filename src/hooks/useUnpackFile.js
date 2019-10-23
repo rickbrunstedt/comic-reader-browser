@@ -20,6 +20,7 @@ async function openArchive(zipFile) {
 
 const types = {
   ADD_FILE: 'ADD_FILE',
+  SET_PROGRESS: 'SET_PROGRESS',
   SET_ERROR: 'SET_ERROR',
   RESET: 'RESET',
   SET_IMAGE_DATA: 'SET_IMAGE_DATA',
@@ -36,6 +37,11 @@ function unpackFileReducer(state, action) {
       return {
         ...state,
         files: [...state.files, action.file],
+      };
+
+    case types.SET_PROGRESS:
+      return {
+        ...state,
         progress: action.progress,
       };
 
@@ -62,6 +68,20 @@ function unpackFileReducer(state, action) {
   }
 }
 
+function validateFileExtension(fileExtension) {
+  let allowedFileExtensions = [
+    'tif',
+    'tiff',
+    'bmp',
+    'jpg',
+    'jpeg',
+    'gif',
+    'png',
+  ];
+
+  return allowedFileExtensions.indexOf(fileExtension) >= 0;
+}
+
 export function useUnpackFile() {
   const [state, dispatch] = useReducer(unpackFileReducer, initialState);
 
@@ -86,10 +106,24 @@ export function useUnpackFile() {
       const numberOfFiles = compressedFiles.length;
       let currentFile = 0;
 
-      compressedFiles.forEach(async compressedFile => {
+      for (let i = 0; i < compressedFiles.length; i++) {
+        const compressedFile = compressedFiles[i];
         let file = await compressedFile.file.extract();
+        let fileExtension = file.name.slice(
+          ((file.name.lastIndexOf('.') - 1) >>> 0) + 2
+        );
+
         currentFile += 1;
         const progress = Math.round((currentFile / numberOfFiles) * 100);
+
+        dispatch({
+          type: types.SET_PROGRESS,
+          progress,
+        });
+
+        if (!validateFileExtension(fileExtension)) {
+          continue;
+        }
 
         const newFile = {
           fileData: file,
@@ -101,10 +135,10 @@ export function useUnpackFile() {
         dispatch({
           type: types.ADD_FILE,
           file: newFile,
-          progress,
         });
+
         handleReadFile(newFile);
-      });
+      }
     } catch (error) {
       dispatch({ type: types.SET_ERROR, message: error.message });
     }
