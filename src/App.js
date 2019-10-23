@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { useEffect } from 'preact/hooks';
-import { useUnpackFile, usePageCount } from './hooks';
+import { useUnpackFile, usePageCount, useSharedTarget } from './hooks';
 import { FileDropView } from './components/FileDropView';
 import { ComicView } from './components/ComicView';
 import { Navigation } from './components/Navigation';
@@ -13,6 +13,7 @@ export default function App() {
   const [{ files, progress }, fileActions] = useUnpackFile();
   const [pageState, pageActions] = usePageCount();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [sharedTargetState, sharedTargetActions] = useSharedTarget();
 
   useEffect(() => {
     if (progress === 100) {
@@ -42,6 +43,11 @@ export default function App() {
     }
 
     return <FileDropView unpackFile={fileActions.unpack} progress={progress} />;
+  }
+
+  if (sharedTargetState.hasSharedTarget) {
+    fileActions.unpack(sharedTargetState.file);
+    sharedTargetActions.reset();
   }
 
   const navigationActions = {

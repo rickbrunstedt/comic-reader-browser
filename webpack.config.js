@@ -58,17 +58,24 @@ const config = {
 
   devServer: {
     contentBase: [path.join(__dirname, 'dist')],
+    host: '0.0.0.0',
   },
 };
 
-if (production) {
+if (true) {
   config.plugins.push(
-    new GenerateSW({
+    // new GenerateSW({
+    //   swDest: 'sw.js',
+    //   clientsClaim: true,
+    //   skipWaiting: true,
+    // })
+    new InjectManifest({
       swDest: 'sw.js',
-      clientsClaim: true,
-      skipWaiting: true,
+      swSrc: './src/sw.js',
+      // clientsClaim: true,
+      // skipWaiting: true,
     })
-  )
+  );
 }
 
 module.exports = config;

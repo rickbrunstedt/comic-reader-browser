@@ -4,7 +4,7 @@
   "name": "Comic Book Reader",
   "scope": "/",
   "display": "fullscreen",
-  "start_url": "https://comic-reader-browser.rbrunstedt.now.sh/",
+  "start_url": "https://comic-reader-browser-git-add-share-target.rbrunstedt.now.sh/",
   "short_name": "Comic Book Read",
   "theme_color": "transparent",
   "description": "",
@@ -12,6 +12,19 @@
   "background_color": "transparent",
   "related_applications": [],
   "prefer_related_applications": false,
+  "share_target": {
+    "action": "/?share-target",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "files": [
+        {
+          "name": "file",
+          "accept": [".cbr", ".cbz", ".rar", ".zip"]
+        }
+      ]
+    }
+  },
   "icons": [
     {
       "src": "/images/e051d3b1-5e1d-fa2a-82c6-bb3df6dd33a3.webPlatform.png",
