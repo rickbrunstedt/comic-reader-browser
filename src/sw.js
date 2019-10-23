@@ -27,23 +27,52 @@ workbox.core.clientsClaim();
  * See https://goo.gl/S9QRab
  */
 // self.__precacheManifest = [].concat(self.__precacheManifest || []);
-// workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
+workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 /**
  * Everything below is custom made
  */
+
+function serveShareTarget(event) {
+  const dataPromise = event.request.formData();
+
+  // Redirect so the user can refresh the page without resending data.
+  // @ts-ignore It doesn't like me giving a response to respondWith, although it's allowed.
+  event.respondWith(Response.redirect('/?share-target'));
+
+  event.waitUntil(
+    (async function() {
+      // The page sends this message to tell the service worker it's ready to receive the file.
+      await nextMessage('share-ready');
+      const client = await self.clients.get(event.resultingClientId);
+      const data = await dataPromise;
+      const file = data.get('file');
+      client.postMessage({ file, action: 'load-comic' });
+    })()
+  );
+}
+
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'POST') {
-    event.respondWith(fetch(event.request));
+  // if (event.request.method !== 'POST') {
+  //   event.respondWith(fetch(event.request));
+  //   return;
+  // }
+
+  if (
+    url.pathname === '/' &&
+    url.searchParams.has('share-target') &&
+    event.request.method === 'POST'
+  ) {
+    serveShareTarget(event);
     return;
   }
 
-  event.respondWith(
-    (async () => {
-      const formData = await event.request.formData();
-      const link = formData.get('link') || '';
-      const responseUrl = await saveBookmark(link);
-      return Response.redirect(responseUrl, 303);
-    })()
-  );
+  // event.respondWith(
+  //   (async () => {
+  //     const formData = await event.request.formData();
+  //     const file = formData.get('file') || '';
+  //     const responseUrl = await saveBookmark(file);
+  //     return Response.redirect(responseUrl, 303);
+  //   })()
+  // );
 });

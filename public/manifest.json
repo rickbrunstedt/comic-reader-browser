@@ -20,11 +20,7 @@
       "files": [
         {
           "name": "file",
-          "accept": [".cbr", ".cbz"]
-        },
-        {
-          "name": "image",
-          "accept": ["images/*"]
+          "accept": [".cbr", ".cbz", ".rar", ".zip"]
         }
       ]
     }
