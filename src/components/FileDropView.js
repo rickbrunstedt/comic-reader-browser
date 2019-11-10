@@ -8,8 +8,12 @@ const container = css`
   flex-direction: column;
 `;
 
-export function FileDropView({ unpackFile, progress }) {
+export function FileDropView({ gotoFiledropView, unpackFile, progress }) {
   function renderView() {
+    if (progress === 100) {
+      gotoFiledropView();
+    }
+
     if (progress > 0) {
       return <ProgressBar progress={progress} />;
     }
