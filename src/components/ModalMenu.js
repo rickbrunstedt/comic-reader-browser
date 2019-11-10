@@ -102,6 +102,16 @@ export function ModalMenu({ actions, pageState }) {
     }
   }
 
+  function loadNewComic() {
+    actions.toggleShowMenu();
+    actions.gotoFiledropView();
+  }
+
+  function gotoListView() {
+    actions.toggleShowMenu();
+    actions.gotoListView();
+  }
+
   return (
     <div class={container}>
       <button
@@ -118,11 +128,16 @@ export function ModalMenu({ actions, pageState }) {
 
         <hr class="divider" />
         <p class="info-text">
-          This takes you back to start page where you can load new comic. It
-          will also remove comic from cache/storage.
+          This takes you back to start page where you can load new comic.
         </p>
-        <button class="settings-btn" onClick={actions.handleReset}>
+        <button class="settings-btn" onClick={loadNewComic}>
           Load new comic
+        </button>
+
+        <hr class="divider" />
+        <p class="info-text">Se all your comics</p>
+        <button class="settings-btn" onClick={gotoListView}>
+          Go to comic list
         </button>
 
         <hr class="divider" />

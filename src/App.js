@@ -6,51 +6,102 @@ import { FileDropView } from './components/FileDropView';
 import { ComicView } from './components/ComicView';
 import { Navigation } from './components/Navigation';
 import { ModalMenu } from './components/ModalMenu';
+import { ComicListView } from './components/ComicListView';
 import { css } from 'emotion';
 import './style/index.css';
 
+const VIEW_STORAGE = 'current-view';
+const VIEWS = {
+  LIST_VIEW: 'LIST_VIEW',
+  FILEDROP_VIEW: 'FILEDROP_VIEW',
+  COMIC_VIEW: 'COMIC_VIEW',
+};
+
+function getInitialView() {
+  const view = window.localStorage.getItem(VIEW_STORAGE);
+  if (view) return view;
+  return VIEWS.FILEDROP_VIEW;
+}
+
 export default function App() {
-  const [{ files, progress }, fileActions] = useUnpackFile();
+  const [currentComic, setCurrentComic] = useState();
+  const [unpackState, fileActions] = useUnpackFile();
   const [pageState, pageActions] = usePageCount();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [view, setView] = useState(getInitialView());
 
   useEffect(() => {
-    if (progress === 100) {
-      pageActions.setNumberOfPages(files.length);
+    if (unpackState.progress === 100) {
+      if (unpackState.files) {
+        pageActions.setNumberOfPages(unpackState.files.length);
+        setCurrentComic(unpackState.files);
+      }
+      fileActions.reset();
     }
-  }, [progress, files.length, pageActions]);
+  }, [unpackState.progress, unpackState.files.length, pageActions]);
 
   function toggleShowMenu() {
     setIsMenuVisible(!isMenuVisible);
   }
 
   function handleReset() {
-    fileActions.reset();
+    setCurrentComic([]);
     pageActions.reset();
-    setIsMenuVisible(false);
   }
 
-  function renderView() {
-    if (progress === 100 && files[0].imageData) {
-      let images = [files[pageState.current - 1]];
+  function handleSetView(newView) {
+    setView(newView);
+    window.localStorage.setItem(VIEW_STORAGE, newView);
+  }
 
-      if (pageState.amountToView === 2 && files[pageState.current]) {
-        images.push(files[pageState.current]);
-      }
-
-      return <ComicView images={images} />;
+  function switchView(newView) {
+    if (newView === VIEWS.FILEDROP_VIEW) {
+      handleReset();
     }
 
-    return <FileDropView unpackFile={fileActions.unpack} progress={progress} />;
+    handleSetView(newView);
+  }
+
+  function setComic(comicFiles) {
+    setCurrentComic(comicFiles);
+    pageActions.setNumberOfPages(comicFiles.length);
+    handleSetView(VIEWS.COMIC_VIEW);
   }
 
   const navigationActions = {
     toggleShowMenu,
-    handleReset: handleReset,
+    gotoFiledropView: () => switchView(VIEWS.FILEDROP_VIEW),
+    gotoListView: () => switchView(VIEWS.LIST_VIEW),
     nextPage: pageActions.nextPage,
     prevPage: pageActions.prevPage,
     setAmountOfPagesToView: pageActions.setAmountToView,
   };
+
+  function renderView() {
+    switch (view) {
+      case VIEWS.LIST_VIEW:
+        return <ComicListView setComic={setComic} />;
+
+      case VIEWS.COMIC_VIEW:
+        if (currentComic) {
+          let images = [currentComic[pageState.current - 1]];
+          if (pageState.amountToView === 2 && currentComic[pageState.current]) {
+            images.push(currentComic[pageState.current]);
+          }
+          return <ComicView images={images} />;
+        }
+
+      case VIEWS.FILEDROP_VIEW:
+      default:
+        return (
+          <FileDropView
+            gotoFiledropView={() => switchView(VIEWS.COMIC_VIEW)}
+            unpackFile={fileActions.unpack}
+            progress={unpackState.progress}
+          />
+        );
+    }
+  }
 
   return (
     <div
@@ -68,7 +119,7 @@ export default function App() {
       )}
 
       <Navigation
-        progress={progress}
+        progress={unpackState.progress}
         actions={navigationActions}
         pageState={pageState}
       />

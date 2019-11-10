@@ -1,6 +1,7 @@
 import { Archive } from 'libarchive.js/main.js';
-import { useReducer } from 'preact/hooks';
-import { readFileAsImage } from '../utils';
+import { useReducer, useEffect } from 'preact/hooks';
+import { readFileAsImage } from '../lib/readFileAsImage';
+import { useDB } from './useDB';
 
 Archive.init({
   workerUrl: '/libarchivejs/worker-bundle.js',
@@ -18,20 +19,29 @@ async function openArchive(zipFile) {
   return comporessedFiles;
 }
 
+const FILETYPE_RGX = /\.(cbr|cbz|zip|rar)$/;
+
 const types = {
   ADD_FILE: 'ADD_FILE',
   SET_ERROR: 'SET_ERROR',
   RESET: 'RESET',
-  SET_IMAGE_DATA: 'SET_IMAGE_DATA',
+  SET_TITLE: 'SET_TITLE',
 };
 
 const initialState = {
   files: [],
+  title: '',
   progress: 0,
 };
 
 function unpackFileReducer(state, action) {
   switch (action.type) {
+    case types.SET_TITLE:
+      return {
+        ...state,
+        title: action.title,
+      };
+
     case types.ADD_FILE:
       return {
         ...state,
@@ -45,15 +55,6 @@ function unpackFileReducer(state, action) {
         errorMessage: action.message,
       };
 
-    case types.SET_IMAGE_DATA:
-      const files = state.files.map(file => {
-        if (file.pageNumber === action.pageNumber) {
-          return { ...file, imageData: action.imageData };
-        }
-        return file;
-      });
-      return { ...state, files };
-
     case types.RESET:
       return initialState;
 
@@ -64,38 +65,57 @@ function unpackFileReducer(state, action) {
 
 export function useUnpackFile() {
   const [state, dispatch] = useReducer(unpackFileReducer, initialState);
+  const [db, isInitialized] = useDB();
+
+  useEffect(() => {
+    if (state.progress === 100) {
+      saveToStorage();
+    }
+  }, [state.progress, isInitialized]);
 
   function reset() {
     dispatch({ type: types.RESET });
   }
 
-  async function handleReadFile({ fileData, pageNumber }) {
+  async function saveToStorage() {
     try {
-      const imageData = await readFileAsImage(fileData);
-      dispatch({ type: types.SET_IMAGE_DATA, imageData, pageNumber });
+      const { title, files } = state;
+      const id = await db.stores.comics.add({
+        title,
+        files,
+      });
+      await db.stores.thumbnails.add({
+        comicId: id,
+        title: title,
+        image: files[0],
+      });
+      return;
     } catch (error) {
-      console.error(error.message);
-      dispatch({ type: types.SET_ERROR, message: error.message });
+      // Todo: Handle error with e.g. an context where it could be pushed.
+      console.error(error);
     }
   }
 
   async function unpack(zipFile) {
     try {
       reset();
+      const title = zipFile.name.replace(FILETYPE_RGX, '');
+      dispatch({ type: types.SET_TITLE, title });
+
       const compressedFiles = await openArchive(zipFile);
       const numberOfFiles = compressedFiles.length;
       let currentFile = 0;
 
       compressedFiles.forEach(async compressedFile => {
         let file = await compressedFile.file.extract();
+
         currentFile += 1;
         const progress = Math.round((currentFile / numberOfFiles) * 100);
 
+        const imageData = await readFileAsImage(file);
         const newFile = {
-          fileData: file,
           name: file.name,
-          pageNumber: currentFile,
-          imageData: null,
+          imageData: imageData,
         };
 
         dispatch({
@@ -103,7 +123,6 @@ export function useUnpackFile() {
           file: newFile,
           progress,
         });
-        handleReadFile(newFile);
       });
     } catch (error) {
       dispatch({ type: types.SET_ERROR, message: error.message });

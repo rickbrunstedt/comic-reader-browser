@@ -33,18 +33,14 @@ const container = css`
   }
 `;
 
-export function Navigation({ progress, pageState, actions }) {
-  if (progress < 100) {
-    return null;
-  }
-
-  function handleAmountToView() {
-    if (pageState.amountToView === 1) {
-      actions.setAmountOfPagesToView(2);
-    } else {
-      actions.setAmountOfPagesToView(1);
-    }
-  }
+export function Navigation({ pageState, actions }) {
+  // function handleAmountToView() {
+  //   if (pageState.amountToView === 1) {
+  //     actions.setAmountOfPagesToView(2);
+  //   } else {
+  //     actions.setAmountOfPagesToView(1);
+  //   }
+  // }
 
   return (
     <div className={container}>
