@@ -30,7 +30,7 @@ const container = css`
   }
 `;
 
-export function FileDrop({ unpackFile, progress }) {
+export function FileDrop({ addNewComic }) {
   const fileInputRef = useRef(null);
 
   function onDrop(event) {
@@ -49,7 +49,7 @@ export function FileDrop({ unpackFile, progress }) {
   function onFileChange(event) {
     event.preventDefault();
     const file = event.target.files[0];
-    unpackFile(file);
+    addNewComic(file);
   }
 
   function onDragOver(event) {

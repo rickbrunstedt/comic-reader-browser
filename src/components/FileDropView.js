@@ -2,23 +2,27 @@ import { h } from 'preact';
 import { css } from 'emotion';
 import { FileDrop } from './FileDrop';
 import { ProgressBar } from './ProgressBar';
+import { useContext } from 'preact/hooks';
+import { currentComicContext } from '../context/currentComic';
 
 const container = css`
   display: flex;
   flex-direction: column;
 `;
 
-export function FileDropView({ gotoFiledropView, unpackFile, progress }) {
+export function FileDropView({ gotoFiledropView }) {
+  const { unpackState, addNewComic } = useContext(currentComicContext);
+
   function renderView() {
-    if (progress === 100) {
+    if (unpackState.progress === 100) {
       gotoFiledropView();
     }
 
-    if (progress > 0) {
-      return <ProgressBar progress={progress} />;
+    if (unpackState.progress > 0) {
+      return <ProgressBar progress={unpackState.progress} />;
     }
 
-    return <FileDrop unpackFile={unpackFile} />;
+    return <FileDrop addNewComic={addNewComic} />;
   }
 
   return (

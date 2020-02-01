@@ -1,7 +1,8 @@
 import { h } from 'preact';
-import { useState } from 'preact/hooks';
-import { useEffect } from 'preact/hooks';
-import { useUnpackFile, usePageCount } from './hooks';
+import { useState, useContext } from 'preact/hooks';
+import { currentComicContext } from './context/currentComic';
+// import { useEffect } from 'preact/hooks';
+// import { useUnpackFile, usePageCount } from './hooks';
 import { FileDropView } from './components/FileDropView';
 import { ComicView } from './components/ComicView';
 import { Navigation } from './components/Navigation';
@@ -24,29 +25,12 @@ function getInitialView() {
 }
 
 export default function App() {
-  const [currentComic, setCurrentComic] = useState();
-  const [unpackState, fileActions] = useUnpackFile();
-  const [pageState, pageActions] = usePageCount();
+  const { handleReset } = useContext(currentComicContext);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [view, setView] = useState(getInitialView());
 
-  useEffect(() => {
-    if (unpackState.progress === 100) {
-      if (unpackState.files) {
-        pageActions.setNumberOfPages(unpackState.files.length);
-        setCurrentComic(unpackState.files);
-      }
-      fileActions.reset();
-    }
-  }, [unpackState.progress, unpackState.files.length, pageActions]);
-
   function toggleShowMenu() {
     setIsMenuVisible(!isMenuVisible);
-  }
-
-  function handleReset() {
-    setCurrentComic([]);
-    pageActions.reset();
   }
 
   function handleSetView(newView) {
@@ -62,25 +46,16 @@ export default function App() {
     handleSetView(newView);
   }
 
-  function setComic(comicFiles) {
-    setCurrentComic(comicFiles);
-    pageActions.setNumberOfPages(comicFiles.length);
-    handleSetView(VIEWS.COMIC_VIEW);
-  }
-
   const navigationActions = {
     toggleShowMenu,
     gotoFiledropView: () => switchView(VIEWS.FILEDROP_VIEW),
     gotoListView: () => switchView(VIEWS.LIST_VIEW),
-    nextPage: pageActions.nextPage,
-    prevPage: pageActions.prevPage,
-    setAmountOfPagesToView: pageActions.setAmountToView,
   };
 
   function renderView() {
     switch (view) {
       case VIEWS.LIST_VIEW:
-        return <ComicListView setComic={setComic} />;
+        return <ComicListView />;
 
       case VIEWS.COMIC_VIEW:
         if (currentComic) {
@@ -96,8 +71,8 @@ export default function App() {
         return (
           <FileDropView
             gotoFiledropView={() => switchView(VIEWS.COMIC_VIEW)}
-            unpackFile={fileActions.unpack}
-            progress={unpackState.progress}
+            // unpackFile={fileActions.unpack}
+            // progress={unpackState.progress}
           />
         );
     }
@@ -113,16 +88,8 @@ export default function App() {
       `}
     >
       {renderView()}
-
-      {isMenuVisible && (
-        <ModalMenu pageState={pageState} actions={navigationActions} />
-      )}
-
-      <Navigation
-        progress={unpackState.progress}
-        actions={navigationActions}
-        pageState={pageState}
-      />
+      <ModalMenu isVisible={isMenuVisible} actions={navigationActions} />
+      <Navigation actions={navigationActions} />
     </div>
   );
 }

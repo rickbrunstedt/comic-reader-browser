@@ -1,5 +1,77 @@
 import { h } from 'preact';
 import { css } from 'emotion';
+import { useContext } from 'preact/hooks';
+import { currentComicContext } from '../context/currentComic';
+
+export function ModalMenu({ isVisible, actions }) {
+  const { pageState, pageActions } = useContext(currentComicContext);
+
+  function handleAmountToView() {
+    if (pageState.amountToView === 1) {
+      pageActions.setAmountToView(2);
+    } else {
+      pageActions.setAmountToView(1);
+    }
+  }
+
+  function loadNewComic() {
+    actions.toggleShowMenu();
+    actions.gotoFiledropView();
+  }
+
+  function gotoListView() {
+    actions.toggleShowMenu();
+    actions.gotoListView();
+  }
+
+  if (!isVisible) return null;
+
+  return (
+    <div class={container}>
+      <button
+        onClick={actions.toggleShowMenu}
+        class="background-close-btn"
+      ></button>
+
+      <div class="menu">
+        <button onClick={actions.toggleShowMenu} class="close-btn">
+          +
+        </button>
+
+        <h2>Menu</h2>
+
+        <hr class="divider" />
+        <p class="info-text">
+          This takes you back to start page where you can load new comic.
+        </p>
+        <button class="settings-btn" onClick={loadNewComic}>
+          Load new comic
+        </button>
+
+        <hr class="divider" />
+        <p class="info-text">Se all your comics</p>
+        <button class="settings-btn" onClick={gotoListView}>
+          Go to comic list
+        </button>
+
+        <hr class="divider" />
+        <p class="info-text">
+          This change if you want to show single double page per view.
+        </p>
+
+        <div class="settings-container">
+          <button class="settings-btn" onClick={handleAmountToView}>
+            Single/Double
+          </button>
+
+          <span class="settings-status">
+            Current: <b>{pageState.amountToView === 1 ? 'Single' : 'Double'}</b>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const container = css`
   --background: whitesmoke;
@@ -92,69 +164,3 @@ const container = css`
     }
   }
 `;
-
-export function ModalMenu({ actions, pageState }) {
-  function handleAmountToView() {
-    if (pageState.amountToView === 1) {
-      actions.setAmountOfPagesToView(2);
-    } else {
-      actions.setAmountOfPagesToView(1);
-    }
-  }
-
-  function loadNewComic() {
-    actions.toggleShowMenu();
-    actions.gotoFiledropView();
-  }
-
-  function gotoListView() {
-    actions.toggleShowMenu();
-    actions.gotoListView();
-  }
-
-  return (
-    <div class={container}>
-      <button
-        onClick={actions.toggleShowMenu}
-        class="background-close-btn"
-      ></button>
-
-      <div class="menu">
-        <button onClick={actions.toggleShowMenu} class="close-btn">
-          +
-        </button>
-
-        <h2>Menu</h2>
-
-        <hr class="divider" />
-        <p class="info-text">
-          This takes you back to start page where you can load new comic.
-        </p>
-        <button class="settings-btn" onClick={loadNewComic}>
-          Load new comic
-        </button>
-
-        <hr class="divider" />
-        <p class="info-text">Se all your comics</p>
-        <button class="settings-btn" onClick={gotoListView}>
-          Go to comic list
-        </button>
-
-        <hr class="divider" />
-        <p class="info-text">
-          This change if you want to show single double page per view.
-        </p>
-
-        <div class="settings-container">
-          <button class="settings-btn" onClick={handleAmountToView}>
-            Single/Double
-          </button>
-
-          <span class="settings-status">
-            Current: <b>{pageState.amountToView === 1 ? 'Single' : 'Double'}</b>
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}

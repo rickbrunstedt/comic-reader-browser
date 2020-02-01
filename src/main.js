@@ -1,5 +1,6 @@
 import { h, render } from 'preact';
 import App from './App.js';
+import { CurrentComicProvider } from './context/currentComic.js';
 
 function initServiceWorker() {
   if ('serviceWorker' in navigator) {
@@ -18,4 +19,9 @@ function initServiceWorker() {
 initServiceWorker();
 
 const rootNode = document.getElementById('app');
-render(<App />, rootNode);
+render(
+  <CurrentComicProvider>
+    <App />
+  </CurrentComicProvider>,
+  rootNode
+);

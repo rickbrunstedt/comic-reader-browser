@@ -1,6 +1,33 @@
 import { h } from 'preact';
 import { css } from 'emotion';
 import { colors } from '../style/defaultStyles';
+import { useContext } from 'preact/hooks';
+import { currentComicContext } from '../context/currentComic';
+
+export function Navigation({ actions }) {
+  const { pageState, pageActions } = useContext(currentComicContext);
+
+  return (
+    <div className={container}>
+      <button className="reset-button" onClick={actions.toggleShowMenu}>
+        Menu
+      </button>
+
+      <div className="page-controllers">
+        <button className="page-button" onClick={pageActions.prevPage}>
+          Prev Page
+        </button>
+        <button className="page-button" onClick={pageActions.nextPage}>
+          Next Page
+        </button>
+      </div>
+
+      <div className="page-number">
+        {pageState.current}/{pageState.total}
+      </div>
+    </div>
+  );
+}
 
 const container = css`
   display: grid;
@@ -32,34 +59,3 @@ const container = css`
     padding: 0 1rem;
   }
 `;
-
-export function Navigation({ pageState, actions }) {
-  // function handleAmountToView() {
-  //   if (pageState.amountToView === 1) {
-  //     actions.setAmountOfPagesToView(2);
-  //   } else {
-  //     actions.setAmountOfPagesToView(1);
-  //   }
-  // }
-
-  return (
-    <div className={container}>
-      <button className="reset-button" onClick={actions.toggleShowMenu}>
-        Menu
-      </button>
-
-      <div className="page-controllers">
-        <button className="page-button" onClick={actions.prevPage}>
-          Prev Page
-        </button>
-        <button className="page-button" onClick={actions.nextPage}>
-          Next Page
-        </button>
-      </div>
-
-      <div className="page-number">
-        {pageState.current}/{pageState.total}
-      </div>
-    </div>
-  );
-}

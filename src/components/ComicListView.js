@@ -1,8 +1,66 @@
 import { h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useContext } from 'preact/hooks';
 import { css } from 'emotion';
 import { useDB } from '../hooks/useDB';
 import { colors } from '../style/defaultStyles';
+import { currentComicContext } from '../context/currentComic';
+
+export function ComicListView() {
+  const { setComic } = useContext(currentComicContext);
+  const [thumbnails, setThumbnails] = useState([]);
+  const [db, isInitialized] = useDB();
+
+  useEffect(async () => {
+    if (isInitialized) {
+      const thumbnails = await db.stores.thumbnails.getAll();
+      setThumbnails(thumbnails);
+    }
+  }, [isInitialized]);
+
+  async function handleSetComic(comicId) {
+    const comic = await db.stores.comics.get(comicId);
+    setComic(comic.files);
+  }
+
+  async function removeComic({ id, comicId }) {
+    try {
+      await db.stores.comics.delete(comicId);
+      await db.stores.thumbnails.delete(id);
+      const thumbnails = await db.stores.thumbnails.getAll();
+      setThumbnails(thumbnails);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function renderThumnail() {
+    return thumbnails.map(thumbnail => {
+      return (
+        <div class="thumbnail" key={thumbnail.comicId}>
+          <button
+            class="thumbnail-btn"
+            onClick={() => handleSetComic(thumbnail.comicId)}
+          >
+            <figure class="thumbnail-image">
+              <img alt={thumbnail.title} src={thumbnail.image.imageData} />
+              <figcaption>{thumbnail.title}</figcaption>
+            </figure>
+          </button>
+          <button class="remove-btn" onClick={e => removeComic(thumbnail)}>
+            +
+          </button>
+        </div>
+      );
+    });
+  }
+
+  return (
+    <div class={container}>
+      <h1>Comic list view</h1>
+      <div class="thumbnail-container">{renderThumnail()}</div>
+    </div>
+  );
+}
 
 const container = css`
   overflow: auto;
@@ -90,59 +148,3 @@ const container = css`
     }
   }
 `;
-
-export function ComicListView({ setComic }) {
-  const [thumbnails, setThumbnails] = useState([]);
-  const [db, isInitialized] = useDB();
-
-  useEffect(async () => {
-    if (isInitialized) {
-      const thumbnails = await db.stores.thumbnails.getAll();
-      setThumbnails(thumbnails);
-    }
-  }, [isInitialized]);
-
-  async function handleSetComic(comicId) {
-    const comic = await db.stores.comics.get(comicId);
-    setComic(comic.files);
-  }
-
-  async function removeComic({ id, comicId }) {
-    try {
-      await db.stores.comics.delete(comicId);
-      await db.stores.thumbnails.delete(id);
-      const thumbnails = await db.stores.thumbnails.getAll();
-      setThumbnails(thumbnails);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  function renderThumnail() {
-    return thumbnails.map(thumbnail => {
-      return (
-        <div class="thumbnail" key={thumbnail.comicId}>
-          <button
-            class="thumbnail-btn"
-            onClick={() => handleSetComic(thumbnail.comicId)}
-          >
-            <figure class="thumbnail-image">
-              <img alt={thumbnail.title} src={thumbnail.image.imageData} />
-              <figcaption>{thumbnail.title}</figcaption>
-            </figure>
-          </button>
-          <button class="remove-btn" onClick={e => removeComic(thumbnail)}>
-            +
-          </button>
-        </div>
-      );
-    });
-  }
-
-  return (
-    <div class={container}>
-      <h1>Comic list view</h1>
-      <div class="thumbnail-container">{renderThumnail()}</div>
-    </div>
-  );
-}
