@@ -2,10 +2,10 @@ import { h } from 'preact';
 import { css } from 'emotion';
 import { colors } from '../style/defaultStyles';
 import { useContext } from 'preact/hooks';
-import { currentComicContext } from '../context/currentComic';
+import { appContext } from '../context/appContext';
 
 export function Navigation({ actions }) {
-  const { pageState, pageActions } = useContext(currentComicContext);
+  const { pageState, pageActions } = useContext(appContext);
 
   return (
     <div className={container}>

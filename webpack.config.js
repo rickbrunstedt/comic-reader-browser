@@ -58,6 +58,7 @@ const config = {
 
   devServer: {
     contentBase: [path.join(__dirname, 'dist')],
+    historyApiFallback: true,
   },
 };
 
@@ -68,7 +69,7 @@ if (production) {
       clientsClaim: true,
       skipWaiting: true,
     })
-  )
+  );
 }
 
 module.exports = config;

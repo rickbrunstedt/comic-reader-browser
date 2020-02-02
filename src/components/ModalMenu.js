@@ -1,10 +1,18 @@
 import { h } from 'preact';
 import { css } from 'emotion';
-import { useContext } from 'preact/hooks';
-import { currentComicContext } from '../context/currentComic';
+import { useContext, useEffect } from 'preact/hooks';
+import { appContext } from '../context/appContext';
+import { Link, routerContext } from '../lib/Router';
 
 export function ModalMenu({ isVisible, actions }) {
-  const { pageState, pageActions } = useContext(currentComicContext);
+  const { pageState, pageActions } = useContext(appContext);
+  const router = useContext(routerContext);
+
+  useEffect(() => {
+    if (isVisible) {
+      actions.toggleShowMenu();
+    }
+  }, [router.path]);
 
   function handleAmountToView() {
     if (pageState.amountToView === 1) {
@@ -12,16 +20,6 @@ export function ModalMenu({ isVisible, actions }) {
     } else {
       pageActions.setAmountToView(1);
     }
-  }
-
-  function loadNewComic() {
-    actions.toggleShowMenu();
-    actions.gotoFiledropView();
-  }
-
-  function gotoListView() {
-    actions.toggleShowMenu();
-    actions.gotoListView();
   }
 
   if (!isVisible) return null;
@@ -44,15 +42,15 @@ export function ModalMenu({ isVisible, actions }) {
         <p class="info-text">
           This takes you back to start page where you can load new comic.
         </p>
-        <button class="settings-btn" onClick={loadNewComic}>
+        <Link class="settings-btn" to="/">
           Load new comic
-        </button>
+        </Link>
 
         <hr class="divider" />
         <p class="info-text">Se all your comics</p>
-        <button class="settings-btn" onClick={gotoListView}>
+        <Link class="settings-btn" to="/list">
           Go to comic list
-        </button>
+        </Link>
 
         <hr class="divider" />
         <p class="info-text">

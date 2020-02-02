@@ -2,10 +2,10 @@ import { h, createContext } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import { useUnpackFile, usePageCount } from '../hooks/index';
 
-export const currentComicContext = createContext();
-const Provider = currentComicContext.Provider;
+export const appContext = createContext();
+const Provider = appContext.Provider;
 
-export function CurrentComicProvider({ children }) {
+export function AppContextProvider({ children }) {
   const [currentComic, setCurrentComic] = useState();
   const [unpackState, fileActions] = useUnpackFile();
   const [pageState, pageActions] = usePageCount();
@@ -23,7 +23,6 @@ export function CurrentComicProvider({ children }) {
   function setComic(comicFiles) {
     setCurrentComic(comicFiles);
     pageActions.setNumberOfPages(comicFiles.length);
-    handleSetView(VIEWS.COMIC_VIEW);
   }
 
   function handleReset() {
@@ -31,8 +30,8 @@ export function CurrentComicProvider({ children }) {
     pageActions.reset();
   }
 
-  function addNewComic() {
-    fileActions.unpack();
+  function addNewComic(file) {
+    fileActions.unpack(file);
   }
 
   const value = {

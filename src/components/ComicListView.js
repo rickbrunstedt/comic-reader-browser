@@ -3,10 +3,12 @@ import { useState, useEffect, useContext } from 'preact/hooks';
 import { css } from 'emotion';
 import { useDB } from '../hooks/useDB';
 import { colors } from '../style/defaultStyles';
-import { currentComicContext } from '../context/currentComic';
+import { appContext } from '../context/appContext';
+import { routerContext } from '../lib/Router';
 
 export function ComicListView() {
-  const { setComic } = useContext(currentComicContext);
+  const { setComic } = useContext(appContext);
+  const router = useContext(routerContext);
   const [thumbnails, setThumbnails] = useState([]);
   const [db, isInitialized] = useDB();
 
@@ -17,9 +19,10 @@ export function ComicListView() {
     }
   }, [isInitialized]);
 
-  async function handleSetComic(comicId) {
+  async function openComic(comicId) {
     const comic = await db.stores.comics.get(comicId);
     setComic(comic.files);
+    router.push('/reader');
   }
 
   async function removeComic({ id, comicId }) {
@@ -39,7 +42,7 @@ export function ComicListView() {
         <div class="thumbnail" key={thumbnail.comicId}>
           <button
             class="thumbnail-btn"
-            onClick={() => handleSetComic(thumbnail.comicId)}
+            onClick={() => openComic(thumbnail.comicId)}
           >
             <figure class="thumbnail-image">
               <img alt={thumbnail.title} src={thumbnail.image.imageData} />

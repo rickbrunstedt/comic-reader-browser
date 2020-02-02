@@ -1,5 +1,29 @@
 import { h } from 'preact';
 import { css } from 'emotion';
+import { useContext } from 'preact/hooks';
+import { appContext } from '../context/appContext';
+
+export function ComicView() {
+  const { currentComic, pageState } = useContext(appContext);
+
+  let images = [];
+  if (currentComic) {
+    images = [currentComic[pageState.current - 1]];
+    if (pageState.amountToView === 2 && currentComic[pageState.current]) {
+      images.push(currentComic[pageState.current]);
+    }
+  }
+
+  function renderImages() {
+    return images.map(image => (
+      <div className="image-container">
+        <img key={image.name} alt={image.name} src={image.imageData} />
+      </div>
+    ));
+  }
+
+  return <div className={styles}>{renderImages()}</div>;
+}
 
 const styles = css`
   display: grid;
@@ -25,15 +49,3 @@ const styles = css`
     object-fit: contain;
   }
 `;
-
-export function ComicView({ images }) {
-  function renderImages() {
-    return images.map(image => (
-      <div className="image-container">
-        <img key={image.name} alt={image.name} src={image.imageData} />
-      </div>
-    ));
-  }
-
-  return <div className={styles}>{renderImages()}</div>;
-}

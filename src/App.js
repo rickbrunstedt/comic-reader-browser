@@ -1,8 +1,6 @@
 import { h } from 'preact';
 import { useState, useContext } from 'preact/hooks';
-import { currentComicContext } from './context/currentComic';
-// import { useEffect } from 'preact/hooks';
-// import { useUnpackFile, usePageCount } from './hooks';
+import { appContext } from './context/appContext';
 import { FileDropView } from './components/FileDropView';
 import { ComicView } from './components/ComicView';
 import { Navigation } from './components/Navigation';
@@ -10,6 +8,7 @@ import { ModalMenu } from './components/ModalMenu';
 import { ComicListView } from './components/ComicListView';
 import { css } from 'emotion';
 import './style/index.css';
+import { Router, Route } from './lib/Router';
 
 const VIEW_STORAGE = 'current-view';
 const VIEWS = {
@@ -25,7 +24,7 @@ function getInitialView() {
 }
 
 export default function App() {
-  const { handleReset } = useContext(currentComicContext);
+  const { handleReset } = useContext(appContext);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [view, setView] = useState(getInitialView());
 
@@ -52,32 +51,6 @@ export default function App() {
     gotoListView: () => switchView(VIEWS.LIST_VIEW),
   };
 
-  function renderView() {
-    switch (view) {
-      case VIEWS.LIST_VIEW:
-        return <ComicListView />;
-
-      case VIEWS.COMIC_VIEW:
-        if (currentComic) {
-          let images = [currentComic[pageState.current - 1]];
-          if (pageState.amountToView === 2 && currentComic[pageState.current]) {
-            images.push(currentComic[pageState.current]);
-          }
-          return <ComicView images={images} />;
-        }
-
-      case VIEWS.FILEDROP_VIEW:
-      default:
-        return (
-          <FileDropView
-            gotoFiledropView={() => switchView(VIEWS.COMIC_VIEW)}
-            // unpackFile={fileActions.unpack}
-            // progress={unpackState.progress}
-          />
-        );
-    }
-  }
-
   return (
     <div
       className={css`
@@ -87,9 +60,20 @@ export default function App() {
         background-color: #000;
       `}
     >
-      {renderView()}
-      <ModalMenu isVisible={isMenuVisible} actions={navigationActions} />
-      <Navigation actions={navigationActions} />
+      <Router>
+        <Route path="/">
+          <FileDropView gotoFiledropView={() => switchView(VIEWS.COMIC_VIEW)} />
+        </Route>
+        <Route path="/reader">
+          <ComicView />
+        </Route>
+        <Route path="/list">
+          <ComicListView />
+        </Route>
+
+        <ModalMenu isVisible={isMenuVisible} actions={navigationActions} />
+        <Navigation actions={navigationActions} />
+      </Router>
     </div>
   );
 }

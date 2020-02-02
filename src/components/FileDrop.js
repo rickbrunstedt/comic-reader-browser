@@ -3,33 +3,6 @@ import { useRef } from 'preact/hooks';
 import { css } from 'emotion';
 import { colors } from '../style/defaultStyles';
 
-const container = css`
-  flex: 1 1;
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  max-width: 100%;
-  background: ${colors.grayLight};
-  border-radius: 0.3rem;
-  margin: 0.7rem;
-
-  .info-text {
-    font-size: 2rem;
-    text-align: center;
-  }
-
-  .file-button {
-    background: none;
-    border: none;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-`;
-
 export function FileDrop({ addNewComic }) {
   const fileInputRef = useRef(null);
 
@@ -40,7 +13,7 @@ export function FileDrop({ addNewComic }) {
       for (var i = 0; i < event.dataTransfer.items.length; i++) {
         if (event.dataTransfer.items[i].kind === 'file') {
           var zipFile = event.dataTransfer.items[i].getAsFile();
-          unpackFile(zipFile);
+          addNewComic(zipFile);
         }
       }
     }
@@ -70,3 +43,30 @@ export function FileDrop({ addNewComic }) {
     </div>
   );
 }
+
+const container = css`
+  flex: 1 1;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  background: ${colors.grayLight};
+  border-radius: 0.3rem;
+  margin: 0.7rem;
+
+  .info-text {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .file-button {
+    background: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+`;
