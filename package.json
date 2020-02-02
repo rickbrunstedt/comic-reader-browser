@@ -8,8 +8,9 @@
   "license": "ISC",
   "scripts": {
     "clean": "rm dist",
-    "build": "export NODE_ENV=production && webpack",
     "dev": "webpack-dev-server",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "build": "export NODE_ENV=production && webpack",
     "now-build": "npm run build",
     "deploy": "npx now"
   },
@@ -27,6 +28,7 @@
     "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.2.0",
     "html-webpack-plugin": "^3.2.0",
+    "prettier": "^1.19.1",
     "style-loader": "^1.0.0",
     "webpack": "^4.41.1",
     "webpack-cli": "^3.3.9",
