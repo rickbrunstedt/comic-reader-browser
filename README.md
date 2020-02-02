@@ -6,7 +6,7 @@ It can unzip comic files like .cbr and .cbz
 
 ```bash
 npm install
-npm run start
+npm run dev
 ```
 
 ## Deployment
