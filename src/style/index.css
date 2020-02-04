@@ -1,12 +1,28 @@
-@import url('https://fonts.googleapis.com/css?family=Anton|Montserrat:400,500,600,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Anton|Montserrat:400,700&display=swap');
 
-/*
-Header font
-font-family: 'Anton', sans-serif;
+:root {
+  /* Set theme aliases */
+  --color-text: #fefefe;
+  --color-text-dimmed: #444444;
+  --color-util: #fefefe;
+  --color-bg: #151515;
+  --color-bg-glare: #c5c5c5;
+  --color-shadow: rgba(255, 255, 255, 0.3);
 
-Other text
-font-family: 'Montserrat', sans-serif;
-*/
+  /* --color-mode: 'light'; */
+  /* --color-grayish: #c0c0c0; */
+  /* --color-theme-primary: #e6e6e6; */
+  /* --color-bg-glare: 'coral'; */
+  /* --color-text-glare: 'coral'; */
+  /* --color-selection-text: 'coral'; */
+  /* --color-selection-bg: 'coral'; */
+  /* --color-stroke: 'coral'; */
+  /* --color-action-bg: 'coral'; */
+  /* --color-action-text: 'coral'; */
+  /* --color-theme-highlight: 'coral'; */
+  /* --color-theme-highlight-block: 'coral'; */
+  /* --color-theme-primary-glare: 'coral'; */
+}
 
 * {
   box-sizing: border-box;

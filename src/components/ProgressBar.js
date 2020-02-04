@@ -1,34 +1,29 @@
 import { h } from 'preact';
 import { css } from 'emotion';
-import { colors } from '../style/defaultStyles';
 
 const styles = css`
-  display: flex;
-  flex-grow: 1;
-  justify-content: center;
-  align-items: center;
+  background: var(--color-util);
+  width: 70vw;
+  height: 3rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  justify-self: center;
 
-  progress {
-    flex: 0 1 300px;
-    margin: 0 1rem;
-    overflow: hidden;
-    border-radius: 0.2rem;
-  }
+  div {
+    height: 100%;
+    background: var(--color-bg-glare);
+    outline: var(--color-bg);
 
-  progress::-webkit-progress-bar {
-    background: ${colors.grayLight};
-  }
-
-  progress::-webkit-progress-value {
-    /* border-radius: 0.1rem; */
-    /* background-size: 35px 20px, 100% 100%, 100% 100%; */
-
-    background-image: -webkit-linear-gradient(
-        top,
-        rgba(255, 255, 255, 0.25),
-        rgba(0, 0, 0, 0.25)
-      ),
-      -webkit-linear-gradient(right, #09c, #f44);
+    background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.15) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.15) 75%,
+      transparent 75%,
+      transparent
+    );
 
     transition: background-image 0.2s ease-in-out;
   }
@@ -36,8 +31,14 @@ const styles = css`
 
 export function ProgressBar({ progress }) {
   return (
-    <div className={styles}>
-      <progress value={progress} max="100" />
+    <div class={styles}>
+      <div
+        role="progressbar"
+        aria-valuenow={progress}
+        aria-valuemin="0"
+        aria-valuemax="100"
+        style={{ width: `${progress}%` }}
+      ></div>
     </div>
   );
 }

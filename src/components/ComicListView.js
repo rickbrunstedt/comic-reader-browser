@@ -2,7 +2,6 @@ import { h } from 'preact';
 import { useState, useEffect, useContext } from 'preact/hooks';
 import { css } from 'emotion';
 import { useDB } from '../hooks/useDB';
-import { colors } from '../style/defaultStyles';
 import { appContext } from '../context/appContext';
 import { routerContext } from '../lib/Router';
 
@@ -67,7 +66,8 @@ export function ComicListView() {
 
 const container = css`
   overflow: auto;
-  color: ${colors.primary};
+  color: var(--text-color);
+  background-color: var(--color-bg);
 
   h1 {
     text-align: center;

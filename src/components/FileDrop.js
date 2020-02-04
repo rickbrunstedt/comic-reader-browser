@@ -1,7 +1,6 @@
 import { h } from 'preact';
 import { useRef } from 'preact/hooks';
 import { css } from 'emotion';
-import { colors } from '../style/defaultStyles';
 
 export function FileDrop({ addNewComic }) {
   const fileInputRef = useRef(null);
@@ -45,13 +44,14 @@ export function FileDrop({ addNewComic }) {
 }
 
 const container = css`
-  flex: 1 1;
   display: flex;
   position: relative;
   justify-content: center;
   align-items: center;
-  max-width: 100%;
-  background: ${colors.grayLight};
+  width: 60vw;
+  height: 10rem;
+  background: var(--color-bg-glare);
+  color: var(--color-text-dimmed);
   border-radius: 0.3rem;
   margin: 0.7rem;
 

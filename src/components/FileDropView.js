@@ -9,6 +9,15 @@ import { routerContext } from '../lib/Router';
 const container = css`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  color: var(--color-text-dimmed);
+
+  .content-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export function FileDropView() {
@@ -30,10 +39,9 @@ export function FileDropView() {
   }
 
   return (
-    <div className={container}>
-      <h1 className="title">Comic Reader</h1>
-
-      {renderView()}
+    <div class={container}>
+      <h1 class="title">Comic Reader</h1>
+      <div class="content-container">{renderView()}</div>
     </div>
   );
 }

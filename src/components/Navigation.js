@@ -1,6 +1,5 @@
 import { h } from 'preact';
 import { css } from 'emotion';
-import { colors } from '../style/defaultStyles';
 import { useContext } from 'preact/hooks';
 import { appContext } from '../context/appContext';
 
@@ -34,15 +33,15 @@ const container = css`
   grid-template-columns: auto 1fr auto;
   align-items: center;
 
-  color: ${colors.primary};
-  box-shadow: 0px 0px 6px -2px ${colors.text};
+  color: var(--color-text);
+  box-shadow: 0px 0px 6px -2px var(--color-shadow);
   font-size: 1.2rem;
 
   button {
     border: none;
     border-radius: 0.3rem;
     background: none;
-    color: ${colors.primary};
+    color: var(--color-text);
     height: 100%;
     font-size: inherit;
     padding: 0 1rem;

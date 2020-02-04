@@ -57,7 +57,7 @@ export default function App() {
         display: grid;
         grid-template-rows: 1fr 4rem;
         height: 100%;
-        background-color: #000;
+        background-color: var(--color-bg);
       `}
     >
       <Router>
