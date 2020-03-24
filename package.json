@@ -10,9 +10,7 @@
     "clean": "rm dist",
     "dev": "webpack-dev-server",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
-    "build": "export NODE_ENV=production && webpack",
-    "now-build": "npm run build",
-    "deploy": "npx now"
+    "build": "export NODE_ENV=production && webpack"
   },
   "dependencies": {
     "emotion": "^10.0.9",
