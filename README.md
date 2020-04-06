@@ -1,6 +1,8 @@
 # Comic reader for the browser.
 
-It can unzip comic files like .cbr and .cbz
+Things used for this: Preact, webassembly, indexdDB API.
+
+Comic reader that I did, to learn more about what you could do with a browser. In short, it unpacks cbr/cbz files with webassembly that you then can read in the browser. It supports offline-mode and installable as pwa for browser that supports that. It even saves the comics to your device using the IndexedDB API. 
 
 ## Development
 
@@ -8,13 +10,3 @@ It can unzip comic files like .cbr and .cbz
 npm install
 npm run dev
 ```
-
-## Deployment
-
-From local machine just run
-
-```bash
-npm run deploy
-```
-
-When push to github/master now will auto-deploy it. (By using the package script: `now-deploy`.)
