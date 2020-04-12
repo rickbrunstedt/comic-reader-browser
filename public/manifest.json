@@ -4,7 +4,7 @@
   "name": "Comic Book Reader",
   "scope": "/",
   "display": "fullscreen",
-  "start_url": "https://comic-reader-browser.rbrunstedt.now.sh/",
+  "start_url": "https://comic-reader.rickbrunstedt.com/",
   "short_name": "Comic Book Read",
   "theme_color": "transparent",
   "description": "",
